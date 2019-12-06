@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTO Mapper 3.0 //EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.dao.IMemberDao">
+	<insert id="insertMember">
+		insert into member (email, password, nickname, phoneNumber, member_image, member_state, authority) 
+		values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, ROLE_USER, 1)
+	</insert>
+
+	<!-- 아이디 중복 검사 -->
+	<select id="check_id" parameterType="String" resultType="int">
+		select count(*) from member where email = #{param1, jdbcType=VARCHAR}
+	</select>
+		
+	<select id="snsCheck" resultType="com.study.springboot.dto.MemberDto">
+		select email from member where SNS_CHECK = #{param1}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="find_id" parameterType="String" resultType="String">
+		select email from member where sns_check = #{param1, jdbcType=VARCHAR} and phoneNumber = #{param2}
+	</select>
+		
+	<select id="userCheck" resultType="com.study.springboot.dto.MemberDto">
+		select password from member where email = #{param1}
+	</select>
+		
+	<select id="InformationDao" resultType="com.study.springboot.dto.MemberDto">
+		select * from member where email = #{param1}
+	</select>
+	
+	<update id="InfoModifyDao">
+		update member set member_intro=#{param1}, interest_area=#{param2},
+						  interest_major=#{param3}, interest_group=#{param4}  where email=#{param5}
+	</update>
+	
+	<update id="ModifyPw">
+		update member set password=#{param1} where email=#{param2}
+	</update>
+	
+	<select id="IdCountDao" resultType="int">
+		select count(*) from member where email=#{param1}
+	</select>
+	
+	<update id="LeaveDao">
+	 	update member set member_state='ROLE_LEAVE' where email=#{param1}
+	</update>
+	
+	<update id="MemberStop">
+		update member set member_state='ROLE_STOP' where email=#{param1}
+	</update>
+	
+	<update id="MemberBlackList">
+		update member set member_state='ROLE_BLACKLIST' where email=#{param1}
+	</update>
+	
+	<update id="MemberMember">
+		update member set member_state='ROLE_MEMBER' where email=#{param1}
+	</update>
+	
+	<select id="ClassNumInfo" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_number = #{param1}
+	</select>
+	
+	<select id="ClassNameInfo" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_name = #{param1}
+	</select>
+	
+	<select id="ClassMentoInfo" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_mento = #{param1}
+	</select>
+	
+	<delete id="DeleteClass">
+		delete from class where class_number = #{param1}
+	</delete>
+	
+	<select id="PlaceNumInfo" resultType="com.study.springboot.dto.PlaceDto">
+		select * from place where place_number = #{param1}
+	</select>
+	
+	<select id="PlaceNameInfo" resultType="com.study.springboot.dto.PlaceDto">
+		select * from place where place_name = #{param1}
+	</select>
+	
+	<insert id="QnA">
+		insert into QnA (QnAnum, writer, QnA_content)
+		values (QnAseq.nextval, #{param1 , jdbcType=VARCHAR}, #{param2, jdbcType=VARCHAR})
+	</insert>
+</mapper>

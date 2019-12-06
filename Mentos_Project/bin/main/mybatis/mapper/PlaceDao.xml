@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.dao.IPlaceDao">
+	<select id="listDao" resultType="com.study.springboot.dto.PlaceDto">
+		<![CDATA[
+		select * from (select rownum num, A.* from (select * from place order by place_number desc) A
+		where rownum <= #{param1} ) B where B.num >= #{param2}
+		]]>
+	</select>
+	
+	<insert id="rentDao">
+		insert into place (place_number, place_name, place, place_people_num, 
+							place_price, place_phone, place_email, place_content, 
+							place_image)
+			values (place_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, 
+					#{param5}, #{param6}, #{param7}, #{param8})	
+	</insert>
+	
+	<select id="viewDao" resultType="com.study.springboot.dto.PlaceDto">
+		select * from place where place_number = #{param1}
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		select count(*) as total from place
+	</select>
+	
+</mapper>

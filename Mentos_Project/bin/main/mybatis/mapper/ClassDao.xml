@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.springboot.dao.IClassDao">
+	
+	<insert id="classWriteDao">
+		insert into class (class_number, class_name, class_mento, class_content, class_place, class_image, class_mento_information)
+		values (class_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6} )
+	</insert>
+	
+	<select id="classListDao" resultType="com.study.springboot.dto.ClassDto">
+		<![CDATA[
+		select * from (select rownum num, A.* from (select * from class order by class_number desc) A
+		where rownum <= #{param1} ) B where B.num >= #{param2}
+		]]>
+	</select>
+	
+	<select id="classContentViewDao" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_number = #{param1}
+	</select>
+	
+	<update id="classModifyDao">
+		update class set class_mento = #{param1}, class_name = #{param2}, class_content = #{param3} where class_number = #{param4}
+	</update>
+	
+	<delete id="classDeleteDao">
+		delete from class where class_number = #{param1}
+	</delete>
+	
+	<select id="classReply_viewDao" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_number = #{param1}
+	</select>
+	
+	<insert id="classReplyDao">
+		insert into class (class_number, class_mento, class_name, class_content, class_place, class_image, class_mento_information)
+		values (class_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6} )
+	</insert>
+	
+	<select id="totalCount" resultType="int">
+		select count(*) as total from class
+	</select>
+	
+	<select id="getMentee" resultType="String">
+		select class_mentee where class_number = #{param1}
+	</select>
+	
+	<select id="callClass" resultType="com.study.springboot.dto.ClassDto">
+		select * from class where class_mento = #{param1}
+	</select>
+		
+	<!-- <update id="joinClass">
+		update class set class_mentee =  #{param2}
+		where class_number = #{param1}
+	</update>
+	 -->
+	<insert id="joinClass">
+		insert into classmember (class_number, mentee)
+		values (#{param1}, #{param2} ) 
+	</insert>
+	
+	<insert id="reviewClass">
+		insert into review (review_num, review_writer, class_num, review_score, review_content)
+		values (review.nextval, #{param1}, #{param2}, #{param3}, #{param4}) 
+	</insert>
+	
+	<select id="getRanking" resultType="com.study.springboot.dto.ClassDto">
+		select * from class 
+		<if test="type == null">
+        where class_major LIKE #{keyword} desc
+    	</if>
+	</select>
+</mapper>
