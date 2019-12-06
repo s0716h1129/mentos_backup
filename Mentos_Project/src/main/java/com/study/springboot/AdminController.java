@@ -149,6 +149,9 @@ public class AdminController {
 		String cId = request.getParameter("cId");		
 		String sType = request.getParameter("serType");
 		
+		model.addAttribute("cId", cId);
+		model.addAttribute("cPay", mDao.CPayInfoClassDao(cId));
+		
 		if (sType.equals("s1")) {
 			model.addAttribute("serList", mDao.ClassNumInfo(cId));
 		} else if (sType.equals("s2")) {
@@ -156,8 +159,7 @@ public class AdminController {
 		} else if (sType.equals("s3")) {
 			model.addAttribute("serList", mDao.ClassMentoInfo(cId));
 		}
-		
-		model.addAttribute("cId", cId);
+
 		return "/admin/AdminPage";
 	}
 	

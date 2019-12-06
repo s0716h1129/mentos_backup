@@ -70,6 +70,21 @@
        		 	and p.pay_member = #{param1}
 	</select>
 	
+	<select id ="CPayInfoClassDao" resultType="com.study.springboot.dto.PayDto">
+		select c.class_name, p.pay_price, p.pay_date, p.refund, p.pay_member     
+    		from pay p, class c
+    		where p.pay_kind_num = c.class_number
+        		and c.class_number = #{param1}
+        		and p.pay_kind = 'class'
+	</select>
+	
+	<select id = "ClassReviewDao" resultType="com.study.springboot.dto.ReviewDto">
+		select r.review_num, r.class_num, c.class_name, c.class_mento, r.review_writer, r.review_score, r.review_content
+    		from review r, class c
+   			where r.class_num = c.class_number
+       	 		and c.class_number = #{param1}
+	</select>
+	
 	<update id="MemberStopDate">
 		update member set member_state='ROLE_DATE_STOP', stop_day=#{param2} where email=#{param1}
 	</update>

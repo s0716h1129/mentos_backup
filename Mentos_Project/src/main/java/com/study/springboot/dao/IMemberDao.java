@@ -9,6 +9,7 @@ import com.study.springboot.dto.ClassDto;
 import com.study.springboot.dto.MemberDto;
 import com.study.springboot.dto.PayDto;
 import com.study.springboot.dto.PlaceDto;
+import com.study.springboot.dto.ReviewDto;
 
 @Mapper
 public interface IMemberDao {
@@ -31,8 +32,11 @@ public interface IMemberDao {
 	public String QnA(String id, String QnA_content);
 	
 	// 관리자?
-	public List<PayDto> PayInfoClassDao (String mId);
-	public List<PayDto> PayInfoPlaceDao (String mId);
+	public List<PayDto> PayInfoClassDao (String mId);	// 결제 회원 이름으로 강좌 결제 내역 조회
+	public List<PayDto> PayInfoPlaceDao (String mId);	// 결제 회원 이름으로 장소 결제 내역 조회
+	public List<PayDto> CPayInfoClassDao (String cId);	// 강좌 번호로 강좌 결제 내역 조회
+	
+	public List<ReviewDto> ClassReviewDao (String cId);	// 강좌 번호로 강좌 리뷰 내역 조회
 	
 	public int MemberStopDate (String mId, Timestamp date);	// 기간 정해 계정 정지
 	public int MemberStop(String mId);	// 계정 영구 정지
