@@ -107,8 +107,8 @@
 				if (result.code == "success") {
 					if ($('#sState').val() == 'stop') {
 						var con = confirm("일정 기간 동안 계정을 정지 하겠습니까");
-						var date = prompt("정지 기간을 정해주세요.", "");
 						if (con == true) {
+							var date = prompt("정지 기간을 정해주세요.", "7");
 							window.location.replace("./memberState?type=member&sType=stop&mId="+$('#sId').val()+"&date="+date)
 						} else if (con == false) {
 							alert("취소되었습니다.")
@@ -181,6 +181,9 @@
 	    		<th> 포인트 </th>
 	    		<th> 등급 </th>
 	    		<th> 계정 상태 </th>
+	    		<c:if test ="${serList.member_state eq 'ROLE_DATE_STOP'}">
+	    		<th> 일시 정지 풀리는 날짜 </th>
+	    		</c:if>
 	    	</tr>
 
 			<tr>
@@ -197,7 +200,10 @@
 			  			관리자
 			  		</c:if>
 			  		<c:if test= "${serList.member_state eq 'ROLE_STOP'}">
-			  			계정 정지
+			  			계정 영구 정지
+			  		</c:if>
+			  		<c:if test= "${serList.member_state eq 'ROLE_DATE_STOP'}">
+			  			계정 일시 정지
 			  		</c:if>
 			  		<c:if test= "${serList.member_state eq 'ROLE_LEAVE'}">
 			  			탈퇴
@@ -206,6 +212,9 @@
 			  			블랙리스트
 			  		</c:if>
 		  		</td>
+		  		<c:if test ="${serList.member_state eq 'ROLE_DATE_STOP'}">
+	    		<td> ${serList.stop_day} </td>
+	    		</c:if>
 			</tr>	    	
 	    </table>
 

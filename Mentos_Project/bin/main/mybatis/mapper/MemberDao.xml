@@ -48,6 +48,10 @@
 	 	update member set member_state='ROLE_LEAVE' where email=#{param1}
 	</update>
 	
+	<update id="MemberStopDate">
+		update member set member_state='ROLE_DATE_STOP', stop_day=#{param2} where email=#{param1}
+	</update>
+	
 	<update id="MemberStop">
 		update member set member_state='ROLE_STOP' where email=#{param1}
 	</update>

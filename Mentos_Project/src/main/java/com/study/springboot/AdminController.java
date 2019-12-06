@@ -1,5 +1,9 @@
 package com.study.springboot;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.study.springboot.dao.IMemberDao;
 
@@ -64,7 +67,25 @@ public class AdminController {
 		String sType = request.getParameter("sType");
 		String mId = request.getParameter("mId");
 		
-		if (sType.equals("allStop")) {
+		if (sType.equals("stop")) {
+			int stopDate = Integer.parseInt(request.getParameter("date"));
+			
+			SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+			Calendar cal = Calendar.getInstance();
+			String today = null;
+			today = formatter.format(cal.getTime());
+			Timestamp ts = Timestamp.valueOf(today);
+			
+			cal.setTime(ts);
+			cal.add(Calendar.DATE, +stopDate);
+			
+			Timestamp date = new Timestamp(cal.getTime().getTime());
+		
+			System.out.println("더한 시간 " + date);
+			
+			mDao.MemberStopDate(mId, date);
+			
+		} else if (sType.equals("allStop")) {
 			model.addAttribute(mDao.MemberStop(mId));
 			
 		} else if (sType.equals("delete")) {

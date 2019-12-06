@@ -1,5 +1,6 @@
 package com.study.springboot.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -26,6 +27,7 @@ public interface IMemberDao {
 	public int LeaveDao(String id);		// 회원 탈퇴 시 탈퇴 처리 
 	public String QnA(String id, String QnA_content);
 	// 관리자?
+	public int MemberStopDate (String mId, Timestamp date);	// 기간 정해 계정 정지
 	public int MemberStop(String mId);	// 계정 영구 정지
 	public int MemberBlackList(String mId);		// 계정 블랙리스트
 	public int MemberMember(String mId);		// 계정 일반 회원 처리
