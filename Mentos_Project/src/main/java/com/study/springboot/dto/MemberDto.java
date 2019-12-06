@@ -1,5 +1,7 @@
 package com.study.springboot.dto;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
@@ -19,5 +21,6 @@ public class MemberDto {
 	private String member_state;	// 회원 상태 / 정지 탈퇴 등
 	private String member_image;	// 회원 프로필 이미지
 	private String member_intro;   	// 회원 자기소개
-	private String authority;		// 시큐리티 인증여부
+	private String enabled;		// 시큐리티 인증여부
+	private Date stop_day;	// 계정 일시 정지 풀리는 날짜
 }

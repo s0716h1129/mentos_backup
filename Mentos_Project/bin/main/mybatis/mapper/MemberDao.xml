@@ -36,6 +36,10 @@
 						  interest_major=#{param3}, interest_group=#{param4}  where email=#{param5}
 	</update>
 	
+	<select id="PayMemberCountDao" resultType="int">
+		select count(*) from pay where pay_member = #{param1}
+	</select>
+	
 	<update id="ModifyPw">
 		update member set password=#{param1} where email=#{param2}
 	</update>
@@ -47,6 +51,24 @@
 	<update id="LeaveDao">
 	 	update member set member_state='ROLE_LEAVE' where email=#{param1}
 	</update>
+	
+	<select id="PayInfoClassDao" resultType="com.study.springboot.dto.PayDto">
+		select p.pay_price, p.pay_kind, p.pay_kind_num, p.pay_date, p.refund,
+       		c.class_name
+    		from pay p, class c
+   			where p.pay_kind_num = c.class_number
+        		and p.pay_kind = 'class'
+        		and p.pay_member = #{param1}
+	</select>
+	
+	<select id="PayInfoPlaceDao" resultType="com.study.springboot.dto.PayDto">
+		select p.pay_price, p.pay_kind, p.pay_kind_num, p.pay_date, p.refund,
+      		l.place_name
+    		from pay p, place l
+    		where p.pay_kind_num = l.place_number
+        		and p.pay_kind = 'place'
+       		 	and p.pay_member = #{param1}
+	</select>
 	
 	<update id="MemberStopDate">
 		update member set member_state='ROLE_DATE_STOP', stop_day=#{param2} where email=#{param1}

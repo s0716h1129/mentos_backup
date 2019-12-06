@@ -169,6 +169,7 @@
 		<input type="text" id="mId" name="mId"> &nbsp;
 		<input type="submit" value="검색">		
 		<input type="hidden" id="type" name="type" value="member">
+		<input type="hidden" id="menu" name="menu" value="">
 	</form>
 	
 	<div id='container'>
@@ -180,6 +181,7 @@
 	    		<th> 전화번호 </th>
 	    		<th> 포인트 </th>
 	    		<th> 등급 </th>
+	    		<th> 결제 내역 </th>
 	    		<th> 계정 상태 </th>
 	    		<c:if test ="${serList.member_state eq 'ROLE_DATE_STOP'}">
 	    		<th> 일시 정지 풀리는 날짜 </th>
@@ -192,6 +194,7 @@
 			   	<td> ${serList.phonenumber} </td>
 		   		<td> ${serList.point} </td>
 		   		<td> ${serList.member_score} </td>
+		   		<td> <a href="./memberSerch?type=member&menu=pay&mId=${param.mId}"> ${payCount} </a> </td>
 		  		<td> 
 			  		<c:if test= "${serList.member_state eq 'ROLE_MEMBER'}">
 			  			일반 회원
@@ -215,7 +218,8 @@
 		  		<c:if test ="${serList.member_state eq 'ROLE_DATE_STOP'}">
 	    		<td> ${serList.stop_day} </td>
 	    		</c:if>
-			</tr>	    	
+			</tr>	
+	
 	    </table>
 
 
@@ -246,9 +250,49 @@
 	    	</form>
 	   	
 	   	</c:if>
+	   	
+	   	<c:if test="${param.menu eq 'pay'}">
+	   		<hr><br>
+	   		<h2> 강좌 결제 내역 </h2>
+	   		<table width="500" cellpadding="0" cellspacing="0" border="1">
+	   			<tr>
+	   				<th> 결제 내역 </th>
+	   				<th> 결제 금액 </th>
+	   				<th> 결제일 </th>
+	   				<th> 환불 </th>
+	   			</tr>
+	   			
+	   			<c:forEach items="${classPay}" var="cdto">
+	   			<tr>
+	   				<td> ${cdto.class_name} </td>
+	   				<td> ${cdto.pay_price} </td>
+	   				<td> ${cdto.pay_date} </td>
+	   				<td> ${cdto.refund} </td>
+	   			</tr>
+	   			</c:forEach>
+		   	</table>
+		   	
+		   	<br> <h2> 장소 결제 내역 </h2>
+		   	<table width="500" cellpadding="0" cellspacing="0" border="1">
+	   			<tr>
+	   				<th> 결제 내역 </th>
+	   				<th> 결제 금액 </th>
+	   				<th> 결제일 </th>
+	   				<th> 환불 </th>
+	   			</tr>
+	   			
+	   			<c:forEach items="${placePay}" var="pdto">
+	   			<tr>
+	   				<td> ${pdto.place_name} </td>
+	   				<td> ${pdto.pay_price} </td>
+	   				<td> ${pdto.pay_date} </td>
+	   				<td> ${pdto.refund} </td>
+	   			</tr>
+	   			</c:forEach>
+		   	</table>
+	   	</c:if>
 
 	    </div>
-	    
 	    <div id='right'>
 	    	<button type="button" onclick="location.href='./memberSerch?type=member&menu=cState&mId=${param.mId}'"> 회원 정지 / 삭제 / 블랙리스트 </button> <br><br>
 			<button type="button" onclick=""> 회원 등급 변경</button> <br><br>

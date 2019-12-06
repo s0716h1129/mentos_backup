@@ -38,9 +38,18 @@ public class AdminController {
 	// 회원 검색
 	@RequestMapping("/memberSerch")
 	public String memberSerch(HttpServletRequest request, Model model) {
-		String mId = request.getParameter("mId");		
+		String mId = request.getParameter("mId");
+		String menu = request.getParameter("menu");
+		
 		model.addAttribute("serList", mDao.InformationDao(mId));
 		model.addAttribute("mId", mId);
+		model.addAttribute("payCount", mDao.PayMemberCountDao(mId));
+		
+		if (menu.equals("pay")) {
+			model.addAttribute("classPay", mDao.PayInfoClassDao(mId));
+			model.addAttribute("placePay", mDao.PayInfoPlaceDao(mId));
+		}
+		
 		return "/admin/AdminPage";
 	}
 	
