@@ -296,7 +296,6 @@
 	    <div id='right'>
 	    	<button type="button" onclick="location.href='./memberSerch?type=member&menu=cState&mId=${param.mId}'"> 회원 정지 / 삭제 / 블랙리스트 </button> <br><br>
 			<button type="button" onclick=""> 회원 등급 변경</button> <br><br>
-			<button type="button" onclick=""> 회원 결제 내역 조회 </button> <br><br>
 			<button type="button" onclick="location.href='./memberSerch?type=member&menu=cPw&mId=${param.mId}'"> 회원 비밀번호 변경 </button> <br><br>
 	    </div>
 	</div>

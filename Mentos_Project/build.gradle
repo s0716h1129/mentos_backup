@@ -38,6 +38,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'commons-io:commons-io:2.6'
+	
+	implementation 'org.webjars.bower:bootstrap:4.4.1'
+	implementation 'org.webjars.bower:jquery:3.4.1'
 }
 
 test {
