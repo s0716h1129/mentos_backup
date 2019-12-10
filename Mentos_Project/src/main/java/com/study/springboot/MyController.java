@@ -205,23 +205,22 @@ public class MyController {
 	// 비밀번호 찾기
 	@RequestMapping(value = "/find_pw")
 	public String find_pw(@RequestParam(value = "email", required=false) String email,
-			@RequestParam(value = "id", required=false) String id, 
 			HttpServletResponse response, MemberDto member) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		MemberDto dto = dao.InformationDao(id);
+		MemberDto dto = dao.InformationDao(email);
 		// 아이디가 없으면
-		if(dao.check_id(id) == 0) {
+		if(dao.check_id(email) == 0) {
 			out.print("아이디가 없습니다.");
 			out.close();
 			return "/find_pw_form";
-		}else if (dao.InformationDao(id) == null) {
+		}else if (dto == null) {
 			out.print("등록되지 않은 이메일 입니다.");
 			out.close();
 			return "/find_pw_form";
 		}
 		// 가입에 사용한 이메일이 아니면
-		else if(!email.equals(dao.InformationDao(id).getEmail())) {
+		else if(!email.equals(dto.getEmail())) {
 			out.print("잘못된 이메일 입니다.");
 			out.close();
 			return "/find_pw_form";
@@ -234,7 +233,7 @@ public class MyController {
 			
 			member.setPassword(passwordEncoder1().encode(pw));
 			// 비밀번호 변경
-			dao.ModifyPw(id,pw);
+			dao.ModifyPw(email,pw);
 			// 비밀번호 변경 메일 발송
 			send_mail(member, "find_pw", pw);
 			
@@ -290,14 +289,5 @@ public class MyController {
 		  msg = "회원가입 실패";
 		  resultCode = "F-1";
 		}
-	}
-	
-	@RequestMapping("/QnA")
-	public String QnA(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		String writer = (String) session.getAttribute("id");
-		String QnA_content = request.getParameter("QnA_content");
-		dao.QnA(writer, QnA_content);
-		return "/QnA";
 	}
 }

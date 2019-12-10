@@ -23,8 +23,23 @@
 		select * from place where place_number = #{param1}
 	</select>
 	
+	<select id="placeModify" resultType="com.study.springboot.dto.PlaceDto">
+		select * from place where place_number = #{param1}
+	</select>
+	
+	<update id="modifyOk">
+		update place set place_name = #{param1}, place = #{param2},	place_people_num = #{param3}, 
+		place_price = #{param4}, place_phone = #{param5}, place_email = #{param6}, 
+		place_content = #{param7}, place_image = #{param8} 
+		where place_number = #{param9}
+	</update>
+	
 	<select id="totalCount" resultType="int">
 		select count(*) as total from place
 	</select>
+	
+	<delete id="placeDelete">
+		delete from place where place_number = #{param1}
+	</delete>
 	
 </mapper>

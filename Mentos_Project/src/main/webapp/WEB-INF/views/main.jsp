@@ -1,98 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% 	
 	String id = (String)session.getAttribute("id");
-%>
+%> --%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
 <title>Insert title here</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="../resources/css/scrolling-nav.css" rel="stylesheet">
-
+  <style type="text/css">
+             /* nav tag */
+         div ul{padding-top:10px;}                     /*  상단 여백 10px  */
+         div ul li {
+            display:inline;                         /*  세로나열을 가로나열로 변경 */
+            font:bold 12px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+            padding:0 10px;                         /* 각 메뉴 간격 */
+        }       
+    </style>
 </head>
 <body>
-<!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">Mentos Main</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-        <c:if test="${id == null}">
-          <li class="nav-item">
-			<a class="nav-link js-scroll-trigger"  href="/main/joinForm">join</a>
-          </li>
-          <li class="nav-item">
-       		<a class="nav-link js-scroll-trigger"  href="/main/loginForm">login</a>
-          </li>
-       </c:if>
-       	<c:if test="${id != null}">
-			<tr>
-				<td>${id} </td>
-			</tr>
-		  <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="memberModify">정보수정</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/main/logout">logout</a>
-          </li>
-       </c:if>
-        </ul>
-      </div>
-    </div>
-  </nav>
-   <header class="primary text-white">
-   		<!-- <form action="/class/list" method="post">
-		    <aside style='float: right;'>
-		      <select name='type'> 검색 컬럼
-				    <option value="">검색</option>
-				    <option value="place">지역</option>
-				    <option value="major">분야</option>
-				    <option value="mento">작성자</option>
-		      </select>
-		      <input type='text' name='search' size="50" value='' placeholder="특수문자는 사용할수 없습니다.">
-		      <input type='submit' value="검색">    
-		     </aside> 
-		</form> -->
-	 </header>
+<%@include file ="header.jsp" %>
 	 
 	 <div id='container'>
+        <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
 	    <div id='box-right'>
-	    	<jsp:include page="class/class_list.jsp" flush="false" />
+	    	<%-- <jsp:include page="class/class_list.jsp" flush="false" /> --%>
 	    </div>
 	</div>
-	 <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      	<ol class="breadcrumb">
-  			<li><a class="btn btn-primary" href="/main/">회사소개</a></li>
-  			<li><a class="btn btn-primary" href="/main/">이용하기</a></li>
-  			<li><a class="btn btn-primary" href="/main/">문의하기</a></li>
-  			<li><a class="btn btn-primary" href="/main/">고객센터</a></li>
-		</ol>
-    </div>
-    <!-- /.container -->
-  </footer>
-	 <!-- Bootstrap core JavaScript -->
-  <script src="../resources/vendor/jquery/jquery.min.js"></script>
-  <script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom JavaScript for this theme -->
-  <script src="../resources/js/scrolling-nav.js"></script>
+<%@include file ="footer.jsp" %>
 </body>
 </html>

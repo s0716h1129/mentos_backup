@@ -4,52 +4,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 <script src="http://code.jquery.com/jquery.js"></script>
 <title>Admin Page</title>
 
+<!-- Bootstrap core CSS -->
+<link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
-	#container {
-		display: flex;
-	}
-	#box-left {
-		flex: 1;
-		border-style: solid;
-		border-width: 1px;
-	}
-	#box-right {
-		flex: 5;
-		border-style: solid;
-		border-width: 1px;
-		text-align: right;
-	}
-</style>
-
+<!-- Custom styles for this template -->
+<link href="../resources/css/sb-admin.css" rel="stylesheet">
 </head>
-<body>
-	<h1>관리자</h1>
+<body id="page-top">
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+    <a class="navbar-brand mr-1" href="./main?type="> Mento's 관리자 페이지 </a>
+  </nav>
+  
+  <div id="wrapper">
+  	<ul class="sidebar navbar-nav navbar-dark bg-dark">
+  	  <c:choose>
+  	  	<c:when test="${param.type eq 'member'}">
+  	  		<li class="nav-item dropdown">
+        		<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+          			<span> 회원 관리 </span>
+        		</a>
+       			<div class="dropdown-menu show" aria-labelledby="pagesDropdown">
+          			<a class="dropdown-item" href="./main?type=member"> 회원 검색 </a>
+          			<a class="dropdown-item" href="./memberSerch?type=member&menu=grade&mId=${param.mId}"> 회원 등급 변경 </a>
+          			<a class="dropdown-item" href="./memberSerch?type=member&menu=cPw&mId=${param.mId}"> 회원 비밀번호 변경 </a>
+          			<a class="dropdown-item" href="./memberSerch?type=member&menu=cState&mId=${param.mId}"> 정지/삭제/블랙리스트 </a>
+        		</div>
+      		</li>
+  	  	</c:when>
+  	  <c:otherwise>
+  	  	  <li class="nav-item">
+  	  	  	<a class="nav-link" href="./main?type=member">
+          		<span> 회원 관리 </span>
+        	</a>
+          </li>
+  	  </c:otherwise>
+  	  </c:choose>
+      
+       <c:choose>
+  	  	<c:when test="${param.type eq 'class'}">
+  	  	  <li class="nav-item active">
+  	  	  	<a class="nav-link" href="./main?type=class">
+          		<span> 강좌 관리 </span>
+       		</a>
+        	</li>
+  	  	</c:when>
+  	  	<c:otherwise>
+  	  	  <li class="nav-item">
+  	  	  	<a class="nav-link" href="./main?type=class">
+          		<span> 강좌 관리 </span>
+        	</a>
+        	</li>
+  	  	</c:otherwise>
+  	  </c:choose>
+      
+      <c:choose>
+  	  	<c:when test="${param.type eq 'place'}">
+  	  	  <li class="nav-item active">
+  	  	  	<a class="nav-link" href="./main?type=place">
+          		<span> 장소 관리 </span>
+       		</a>
+        	</li>
+  	  </c:when>
+  	  	<c:otherwise>
+  	  	  <li class="nav-item">
+  	  	  	<a class="nav-link" href="./main?type=place">
+          		<i class="fas fa-fw fa-tachometer-alt"></i>
+          		<span> 장소 관리 </span>
+        	</a>
+        	</li>
+  	  	</c:otherwise>
+  	  </c:choose>
+    </ul>
+    
+    <div id="content-wrapper">
+      <div class="container-fluid">
+	    <c:if test="${param.type eq 'member'}">
+	    	<jsp:include page="memberAdmin.jsp" flush="false" />
+	    </c:if>
+	    <c:if test="${param.type eq 'class'}">
+	    	<jsp:include page="classAdmin.jsp" flush="false" />
+	    </c:if>
+	    <c:if test="${param.type eq 'place'}">
+	    	<jsp:include page="placeAdmin.jsp" flush="false" />
+	    </c:if>
+      </div>
+    </div>
+  </div>
+ 
 	
-	<hr>
-	
-	<div id='container'>
-	    <div id='box-left'>
-	    	<button type="button" onclick="location.href='./main?type=member'"> 회원 관리 </button> <br><br>
-			<button type="button" onclick="location.href='./main?type=class'"> 강좌 관리 </button> <br><br>
-			<button type="button" onclick="location.href='./main?type=place'"> 장소 관리</button>  <br><br>
-	    </div>
-	    <div id='box-right'>
-	    	<c:if test="${param.type eq 'member'}">
-	    		<jsp:include page="memberAdmin.jsp" flush="false" />
-	    	</c:if>
-	    	<c:if test="${param.type eq 'class'}">
-	    		<jsp:include page="classAdmin.jsp" flush="false" />
-	    	</c:if>
-	    	<c:if test="${param.type eq 'place'}">
-	    		<jsp:include page="placeAdmin.jsp" flush="false" />
-	    	</c:if>
-	    </div>
-	</div>
+<!-- Bootstrap core JavaScript -->
+<script src="../resources/vendor/jquery/jquery.min.js"></script>
+<script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Bootstrap core JavaScript -->
+<script src="../resources/vendor/jquery/jquery.min.js"></script>
+<script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
 
 </body>
 </html>

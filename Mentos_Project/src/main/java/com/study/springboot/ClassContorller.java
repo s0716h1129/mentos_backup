@@ -29,7 +29,7 @@ public class ClassContorller {
 	public String userlistPage(HttpServletRequest request,HttpSession session, Model model, @ModelAttribute("bPageInfo") BPageInfo bPageInfo) {
 		//page데이터 
 		int totalCount = bPageInfo.getTotalcount();
-		int listCount = 5;
+		int listCount = 20;
 		int totalPage = bPageInfo.getTotalpage();
 		int curPage = 1;
 		int pageCount = 10;
@@ -116,13 +116,13 @@ public class ClassContorller {
 					 request.getParameter("class_place"),
 					 request.getParameter("class_image"),
 					 request.getParameter("class_mento_information"));
-		return "redirect:class_list";
+		return "redirect:list";
 	}
 	
 	@RequestMapping("/delete")
 	public String delete(HttpServletRequest request, Model model) {
 		dao.classDeleteDao(request.getParameter("id"));
-	return "redirect:class_list";
+	return "redirect:list";
 	}
 	
 	@RequestMapping("/imageUpload")

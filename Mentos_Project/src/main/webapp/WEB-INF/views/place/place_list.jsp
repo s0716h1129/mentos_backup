@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>Place_list</title>
 </head>
+<!-- Bootstrap core CSS -->
+  <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+  <link href="../resources/css/scrolling-nav.css" rel="stylesheet">
 <style>
 	.ti {
 		float:right;
@@ -31,13 +35,22 @@
 		}
 </style>
 <body>
-<div>
+
+<!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Mentos Main</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+</nav>
 <table>
 		<c:forEach items="${list}" var="dto">
 			<tr class="sss">
 				<td>
 					<div style="border:1px solid #808080;">
-					<a href="view?id=${dto.place_number}">
+					<a href="view?place_number=${dto.place_number}">
 						<img src=/upload/${dto.place_image}  width="380" height="340">
 					</a>	
 						<div class="address">
@@ -64,7 +77,7 @@
 				[ &lt;&lt; ]
 			</c:when>
 			<c:otherwise>
-				<a href="list?page=1">[ &lt;&lt; ]</a>
+				<a href="place_list?page=1">[ &lt;&lt; ]</a>
 			</c:otherwise>
 			</c:choose>
 			<!-- 이전 -->
@@ -73,7 +86,7 @@
 				[ &lt; ]
 			</c:when>
 			<c:otherwise>
-				<a href="list?page=${page.curpage - 1}">[ &lt; ]</a>
+				<a href="place_list?page=${page.curpage - 1}">[ &lt; ]</a>
 			</c:otherwise>
 			</c:choose>
 			
@@ -85,7 +98,7 @@
 					</c:when>
 					
 					<c:otherwise>
-						<a href="list?page=${fEach}">[${fEach}]</a>&nbsp;
+						<a href="place_list?page=${fEach}">[${fEach}]</a>&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -96,7 +109,7 @@
 				[ &gt; ]
 			</c:when>
 			<c:otherwise>
-				<a href="list?page=${page.curpage + 1}">[ &gt; ]</a>
+				<a href="place_list?page=${page.curpage + 1}">[ &gt; ]</a>
 			</c:otherwise>
 			</c:choose>
 			<!-- 끝 -->
@@ -105,12 +118,32 @@
 				[ &gt;&gt; ]
 			</c:when>
 			<c:otherwise>
-				<a href="list?page=${page.totalpage}">[ &gt;&gt; ]</a>
+				<a href="place_list?page=${page.totalpage}">[ &gt;&gt; ]</a>
 			</c:otherwise>
 			</c:choose>
 </table>
-</div>
 
+<footer class="py-5 bg-dark">
+<div class="container">
+ <ol class="breadcrumb">
+	 <li><a class="btn btn-primary" href="/main/">회사소개</a></li>
+	 <li><a class="btn btn-primary" href="/main/">이용하기</a></li>
+	 <li><a class="btn btn-primary" href="/main/">문의하기</a></li>
+	 <li><a class="btn btn-primary" href="/main/">고객센터</a></li>
+</ol>
+</div>
+</footer>
+
+ <!-- Bootstrap core JavaScript -->
+  <script src="../resources/vendor/jquery/jquery.min.js"></script>
+  <script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="../resources/js/scrolling-nav.js"></script>
+		
 <!-- 
 totalCount = ${page.totalcount}<br>
 listCount = ${page.listcount}<br>

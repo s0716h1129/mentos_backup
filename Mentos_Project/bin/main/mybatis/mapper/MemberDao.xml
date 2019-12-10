@@ -20,7 +20,7 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="find_id" parameterType="String" resultType="String">
-		select email from member where sns_check = #{param1, jdbcType=VARCHAR} and phoneNumber = #{param2}
+		select email from member where nickname = #{param1, jdbcType=VARCHAR} and phoneNumber = #{param2}
 	</select>
 		
 	<select id="userCheck" resultType="com.study.springboot.dto.MemberDto">
@@ -79,11 +79,16 @@
 	</select>
 	
 	<select id = "ClassReviewDao" resultType="com.study.springboot.dto.ReviewDto">
-		select r.review_num, r.class_num, c.class_name, c.class_mento, r.review_writer, r.review_score, r.review_content
-    		from review r, class c
-   			where r.class_num = c.class_number
-       	 		and c.class_number = #{param1}
+		select r.review_num, r.review_writer, r.review_score, r.review_content, c.class_name
+			from review r, class c
+			where r.review_kind = 'class'
+				and r.review_kind_num = #{param1}
+				and c.class_number = #{param1}
 	</select>
+	
+	<update id="MemberGradeChange">
+		update member set member_score = #{param1} where email = #{param2}
+	</update>
 	
 	<update id="MemberStopDate">
 		update member set member_state='ROLE_DATE_STOP', stop_day=#{param2} where email=#{param1}
@@ -125,8 +130,25 @@
 		select * from place where place_name = #{param1}
 	</select>
 	
+	<select id="PlaceReviewDao" resultType="com.study.springboot.dto.ReviewDto">
+		select r.review_num, r.review_num, r.review_writer, r.review_score, r.review_content, p.place_name
+			from review r, place p
+			where r.review_kind = 'place'
+				and r.review_kind_num = #{param1}
+				and p.place_number = #{param1}
+	</select>
+	
+	<delete id="DeletePlace">
+		delete from place where place_number = #{param1}
+	</delete>
+	
 	<insert id="QnA">
 		insert into QnA (QnAnum, writer, QnA_content)
 		values (QnAseq.nextval, #{param1 , jdbcType=VARCHAR}, #{param2, jdbcType=VARCHAR})
 	</insert>
+	
+	<insert id="notice" parameterType="HashMap">
+      insert into notice (notice_num, notice_writer, notice_title,  notice_content)
+      values (notice_seq.nextval, #{id , jdbcType=VARCHAR}, #{notice_title, jdbcType=VARCHAR}), #{notice_content, jdbcType=VARCHAR})
+   </insert>
 </mapper>

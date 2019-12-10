@@ -25,7 +25,7 @@ public class PlaceController {
 	@Autowired
 	private IPlaceDao placedao;
 	
-	@RequestMapping("/list")
+	@RequestMapping("/place_list")
 	public String userlistPage(HttpServletRequest request,HttpSession session, Model model, @ModelAttribute("bPageInfo") BPageInfo bPageInfo) {
 		System.out.println("list");
 		//page데이터 
@@ -107,9 +107,9 @@ public class PlaceController {
 	{	
 		placedao.rentDao(
 			request.getParameter("place_name"),
-			request.getParameter("place_address"),
+			request.getParameter("place"),
 			request.getParameter("place_people_num"),
-			request.getParameter("place_money"),
+			request.getParameter("place_price"),
 			request.getParameter("place_phone"),	
 			request.getParameter("place_email"),				
 			request.getParameter("place_content"),
@@ -117,6 +117,12 @@ public class PlaceController {
 			);
 		
 		return "redirect:place_list";
+	}
+	
+	@RequestMapping("/place_delete")
+	public String delete(HttpServletRequest request, Model model) {
+		placedao.placeDelete(request.getParameter("place_number"));
+	return "redirect:place_list";
 	}
 	
 	@RequestMapping("/imageUpload")
@@ -157,11 +163,34 @@ public class PlaceController {
 	
 	@RequestMapping("/view")
 	public String view(HttpServletRequest request, Model model) {
-		String sId = request.getParameter("id");
+		String sId = request.getParameter("place_number");
 		model.addAttribute("dto", placedao.viewDao(sId));
 		
 		return "place/place_view";
-		
 	}
 	
+	@RequestMapping("/place_modify")
+	public String modify(HttpServletRequest request, Model model) {
+		String sId = request.getParameter("place_number");
+		model.addAttribute("dto", placedao.viewDao(sId));
+		
+		return "place/place_modify";
+	}
+	
+	@RequestMapping("/modifyOk")
+	public String modify_OK(HttpServletRequest request, Model model) {
+		
+		placedao.modifyOk(
+				request.getParameter("place_name"),
+				request.getParameter("place"),
+				request.getParameter("place_people_num"),
+				request.getParameter("place_price"),
+				request.getParameter("place_phone"),	
+				request.getParameter("place_email"),				
+				request.getParameter("place_content"),
+				request.getParameter("place_image"),
+				request.getParameter("place_number")
+				);
+			return "redirect:place_list";
+	}
 }

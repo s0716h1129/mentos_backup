@@ -24,7 +24,7 @@
 			</tr>
 			<tr>
 				<td>주소</td>
-				<td><input type="text" name="place_address" id="sample5_address" readonly placeholder="주소">
+				<td><input type="text" name="place" id="sample5_address" readonly placeholder="주소">
 					<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색">
 				</td>
 			</tr>
@@ -34,7 +34,7 @@
 			</tr>
 			<tr>
 				<td>대여료</td>
-				<td><input type="text" name="place_money"  placeholder="대여료" class=""></td>
+				<td><input type="text" name="place_price"  placeholder="대여료" class=""></td>
 			</tr>
 			<tr>
 				<td>전화번호</td>
@@ -88,16 +88,19 @@
 			</tr>
 			<tr>
 				<td>이미지</td>
-				<td><input id="img" type="file" name="place_image" />
-				<script>
 				
-				</script>
+				<td>
+				<div id="img" class="image-container">
+				<img id="img_source">
+				</div>
+				<input type="file" id="place_image" name="place_image" size ="50"/>
+				<input type="button" value="등록" onclick="File();" />
 				</td>
 			</tr>
 			<tr>
 				<td>전송</td>
 				<td><input id="btnSubmit" type="submit" value="전송">
-					<input type="button" value="취소" onclick="javascript:window.location='list'" /></td>
+					<input type="button" value="취소" onclick="javascript:window.location='place_list'" /></td>
 			</tr>
 		</table>	
 	</form>
@@ -151,6 +154,34 @@
             }
         }).open();
     }
+	</script>
+	
+	<script>
+	function File(){
+	    var form = $('#rentDao')[0];
+	    var formData = new FormData(form);
+	    formData.append("place_image", $("#place_image")[0].files[0]);
+	    
+	
+	    $.ajax({
+	    	data: formData,
+	    	type: "POST",
+	    	url: './imageUpload',
+	    	cache: false,
+	    	contentType: false,
+	    	enctype: 'multipart/form-data',
+	    	processData: false,
+	        success: function(result){
+	        	
+	        	var obj = JSON.parse(result);
+	    		var url = obj.url;
+	    		alert("업로드 성공!! : " + url);
+	 
+	    		$('#img_source').attr('src',url);
+	        }
+	    });
+	}
+
 	</script>
 	
 </body>

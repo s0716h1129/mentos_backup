@@ -41,6 +41,7 @@ dependencies {
 	
 	implementation 'org.webjars.bower:bootstrap:4.4.1'
 	implementation 'org.webjars.bower:jquery:3.4.1'
+	
 }
 
 test {

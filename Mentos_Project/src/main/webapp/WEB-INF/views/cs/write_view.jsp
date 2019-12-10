@@ -44,8 +44,12 @@
 
 </head>
 <body>
-<form action="QnA" method="post">	
+
 	<table width="500" cellpadding="0" cellsapcing="0" border="1">
+			<tr>
+				<td> 이름 </td>
+				<td> <input name="class_name" value="${id}"></td>
+			</tr>
 			<tr>
 				<td> 내용 </td>
 				<td><textarea id="summernote" name="QnA_content" placeholder="content"></textarea> 
@@ -93,14 +97,13 @@
 					</script>
 				</td>
 			</tr>
-			<tr>
+	<!-- 		<tr>
 				<td colspan="2">
 					<input type="submit" value="입력"> &nbsp;&nbsp;
 					<a href="list">목록보기</a>
 				</td>
-			</tr>
+			</tr> -->
 	
 	</table>
-</form>
 </body>
 </html>
