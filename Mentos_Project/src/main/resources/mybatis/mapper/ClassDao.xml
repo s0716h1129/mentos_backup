@@ -5,10 +5,23 @@
 	
 <mapper namespace="com.study.springboot.dao.IClassDao">
 	
-	<insert id="classWriteDao">
-		insert into class (class_number, class_name, class_mento, class_content, class_place, class_image, class_mento_information)
-		values (class_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6} )
+	<insert id="classWriteDao" parameterType="java.util.HashMap">
+		insert into class (class_number, class_name, class_mento, class_maxNumber, class_payment, class_content, class_place, class_image, 
+						   class_mento_information, class_startDate, class_endDate, class_startTime, class_endTime,
+						   class_receiveStartDate,class_receiveEndDate,class_receiveStartTime,class_receiveEndTime,
+						   class_state, class_location, class_location_y, class_location_x, class_category)
+		values (class_seq.nextval, #{class_name}, #{class_mento},#{class_maxNumber}, #{class_payment}, #{class_content}, #{class_place}, #{class_image},
+				#{class_mento_information}, #{class_startDate}, #{class_endDate}, #{class_startTime}, #{class_endTime},
+				#{class_receiveStartDate}, #{class_receiveEndDate}, #{class_receiveStartTime}, #{class_receiveEndTime}, 
+				#{class_state}, #{class_location}, #{class_location_y}, #{class_location_x}, #{class_category})
 	</insert>
+	
+	
+	<!-- 안드로이드 강좌 개설 -->
+	<insert id="AndclassWriteDao">
+		insert into class (class_number,class_name,class_category,class_receiveStartTime,class_receiveEndTime)
+		values (class_seq.nextval,#{param1},#{param2},#{param3},#{param4})
+	</insert>	
 	
 	<select id="classListDao" resultType="com.study.springboot.dto.ClassDto">
 		<![CDATA[

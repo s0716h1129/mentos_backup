@@ -18,21 +18,6 @@
 <!-- Custom styles for this template -->
 <link href="../resources/css/sb-admin.css" rel="stylesheet">
 
-<style>
-	#container {
-	}
-	#left {
-		border-style: solid;
-		border-width: 1px;
-		width:80%;
-	}
-	#right {
-		border-style: solid;
-		border-width: 1px;
-		text-align: right;
-		width:20%;
-	}
-</style>
 
 <script>
 	function classDelete() {
@@ -63,6 +48,7 @@
     				<button class="btn btn-dark" type="submit"> 검색 <!-- 나중에 돋보기 모양 아이콘 추가하기 --> </button>	
     				<input type="hidden" id="type" name="type" value="class">
 					<input type="hidden" id="menu" name="menu" value="">
+					<input type="hidden" id="page" name="page" value="1">
     			</div>
     		</form></div>
     	<div class="card-body">
@@ -88,8 +74,8 @@
 						   	<td> ${dto.class_mento} </td>
 					   		<td> ${dto.class_place} </td>
 					   		<td> ${dto.class_date} </td>
-					   		<td> <a href="./classPay?type=class&menu=pay&serType=${param.serType}&cId=${dto.class_number}" > 결제 확인 </a> </td>
-					   		<td> <a href="./classReview?type=class&menu=review&serType=${param.serType}&cId=${dto.class_number}" > 리뷰 확인 </a> </td>
+					   		<td> <a href="./classSerch?type=class&menu=pay&serType=${param.serType}&cId=${dto.class_number}" > 결제 확인 </a> </td>
+					   		<td> <a href="./classSerch?type=class&menu=review&serType=${param.serType}&cId=${dto.class_number}" > 리뷰 확인 </a> </td>
 					   		<td> 
 					   		<form>
 					   			<input type="button" value="X" onclick=classDelete()>
@@ -100,6 +86,10 @@
 	            		</tr>
             		</c:forEach>
             	</table>
+            	
+            	<c:if test="${param.menu eq ''}">
+            		<jsp:include page="classPaging.jsp" flush="false" />
+				</c:if>
             </div>
         </div>
     </div>
@@ -131,6 +121,7 @@
 			    		</tr>
 		    		</c:forEach>
             	</table>
+            	<jsp:include page="classPaging.jsp" flush="false" />
             </div>
         </div>
     </div>
@@ -161,10 +152,12 @@
 			    		</c:forEach>
             		</thead>
             	</table>
+            	<jsp:include page="classPaging.jsp" flush="false" />
             </div>
         </div>
     </div>
     </c:if>
+
 
 		<button type="button" onclick=""> 강좌 상세 내용 </button> <br><br>
 		<button type="button" onclick=""> 강좌 정보 수정하기 </button> <br><br>	
@@ -178,8 +171,5 @@
 <!-- Bootstrap core JavaScript -->
 <script src="../resources/vendor/jquery/jquery.min.js"></script>
 <script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Plugin JavaScript -->
-<script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
 </html>

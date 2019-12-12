@@ -26,11 +26,11 @@
 		font-size: 1.1rem;
 		}
 	.address {
-		border:1px solid #808080;
+		border:1px dashed #808080;
 		padding:15px;
 		}
 	.num {
-		border:1px solid #808080;
+		border:1px dashed #808080;
 		padding:15px;
 		}
 </style>
@@ -45,20 +45,20 @@
       </button>
     </div>
 </nav>
-<table>
+<table class=" container table table-bordered table-hover ">
 		<c:forEach items="${list}" var="dto">
 			<tr class="sss">
 				<td>
 					<div style="border:1px solid #808080;">
 					<a href="view?place_number=${dto.place_number}">
-						<img src=/upload/${dto.place_image}  width="380" height="340">
+						<img src=/upload/${dto.place_image}  width="500" height="300">
 					</a>	
 						<div class="address">
-						<div style="font-weight:bold;">${dto.place_name}</div>
-						${dto.place} <br>
+						<div><h3>${dto.place_name}</h3></div>
+						<h5>${dto.place}</h5> <br>
 						</div>
 						<div class="num">
-						수용인원 : ${dto.place_people_num}명 
+						수용인원 : ${dto.place_people_num}명
 						<div class="ti">&nbsp;/시간</div> 
 						<div class="si">${dto.place_price}</div>
 						</div>
@@ -67,62 +67,108 @@
 			</tr>
 		</c:forEach>
 		<tr>
-			<td colspan="5"> <a href="rent">등록</a> </td>
-		</tr>
-		<tr>
-			<td colspan="5">
-			<!-- 처음 -->
-			<c:choose>
-			<c:when test="${(page.curpage - 1) < 1}">
-				[ &lt;&lt; ]
-			</c:when>
-			<c:otherwise>
-				<a href="place_list?page=1">[ &lt;&lt; ]</a>
-			</c:otherwise>
-			</c:choose>
+		<td colspan="5" style="text-align:right;">
+		<button type="button" class="btn btn-" 
+			onclick="javascript:window.location='rent'">등록</button>
+			
+		<div class="container" style='text-align: center;'>
+		<form action="/place/place_list" method="post" style='display: inline-block;'>
+		    <aside>
+		      <select name='type'> <!-- 검색 컬럼 -->
+				    <option value="">검색</option>
+				    <option value="place">지역</option>
+				    <option value="people">인원수</option>
+				    <option value="id">작성자</option>
+		      </select>
+		      <input type='text' name='search' size="50" value='' placeholder="특수문자는 사용할수 없습니다.">
+		      <input type='submit' value="검색">    
+		     </aside> 
+		</form>
+		</div>
+		<br>
+			
+		<nav aria-label="Page navigation example" d-flex justify-content-center>
+		<div class="d-flex justify-content-center">
+		<ul class="pagination" style="text-align:center;">
+			
+			<!-- 맨처음 -->
+			<li class="page-item"><a class="page-link"
+				href="place_list?page=1"> 
+				<span aria-hidden="true">&lt;&lt;</span>
+			</a>
+			</li>
+			
 			<!-- 이전 -->
+								
 			<c:choose>
 			<c:when test="${(page.curpage -1) < 1}">
-				[ &lt; ]
+			<li class="page-item"><a class="page-link" href="#">
+			&lt;
+			</a>
 			</c:when>
 			<c:otherwise>
-				<a href="place_list?page=${page.curpage - 1}">[ &lt; ]</a>
+				<li class="page-item"><a class="page-link" href="place_list?page=${page.curpage - 1}">
+				<span aria-hidden="true">&lt;</span>
+				</a>
 			</c:otherwise>
-			</c:choose>
+			</c:choose>	
 			
 			<!-- 개별 페이지 -->
+			<li class="page-item"> 
 			<c:forEach var="fEach" begin="${page.startpage}" end="${page.endpage}" step="1">
 				<c:choose>
 					<c:when test="${page.curpage == fEach}">
-						[${fEach}] &nbsp;
+					<li class="page-item"><a class="page-link" href="place_list?page=${fEach}" >
+						${fEach} &nbsp;
+					</a>
 					</c:when>
-					
 					<c:otherwise>
-						<a href="place_list?page=${fEach}">[${fEach}]</a>&nbsp;
-					</c:otherwise>
-				</c:choose>
+						<li class="page-item"><a class="page-link" href="place_list?page=${fEach}" > ${fEach} </a>&nbsp;
+						</li>
+						</c:otherwise>
+					</c:choose>
 			</c:forEach>
-			 
+			
 			<!-- 다음 -->
 			<c:choose>
-			<c:when test="${(page.curpage -1) > page.totalpage}">
-				[ &gt; ]
-			</c:when>
-			<c:otherwise>
-				<a href="place_list?page=${page.curpage + 1}">[ &gt; ]</a>
-			</c:otherwise>
+				<c:when test="${(page.curpage -1) > page.totalpage}">
+				<li class="page-item"><a class="page-link" href="#">
+				&gt;
+				</a>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="place_list?page=${page.curpage + 1}"><span
+					aria-hidden="true"> &gt; </span>
+					</a>&nbsp;
+				</c:otherwise>
 			</c:choose>
-			<!-- 끝 -->
+			
+			<!-- 마지막 -->
 			<c:choose>
 			<c:when test="${page.curpage == page.totalpage}">
-				[ &gt;&gt; ]
+			<li class="page-item">
+			<a class="page-link"
+				href="place_list?page=${page.totalpage}"> 
+				<span aria-hidden="false">&gt;&gt;</span>
+			</a>
 			</c:when>
 			<c:otherwise>
-				<a href="place_list?page=${page.totalpage}">[ &gt;&gt; ]</a>
+			<li class="page-item">
+				<a class="page-link"
+					href="place_list?page=${page.totalpage}"> 
+					<span aria-hidden="true">&gt;&gt;</span>
+				</a>
+			</li>
 			</c:otherwise>
 			</c:choose>
+			
+			</ul>
+			</div>
+			</nav>
+			</td>
+		</tr>
 </table>
-
+<br> 
 <footer class="py-5 bg-dark">
 <div class="container">
  <ol class="breadcrumb">

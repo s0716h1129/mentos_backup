@@ -6,6 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	#footer {
+	  background: #ffab62;
+	  width: 100%;
+	  height: 100px;
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	}
+</style>
 </head>
 <body>
 <%@include file ="../header.jsp" %>
@@ -192,6 +202,9 @@
 	startPage = ${page.startpage}<br>
 	endPage = ${page.endpage}<br>
 	 --%>
-<%@include file ="../footer.jsp" %>
+	<div id="footer">
+  		<%@include file ="../footer.jsp" %>
+  	</div>
+
 </body>
 </html>

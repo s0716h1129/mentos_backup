@@ -16,7 +16,9 @@
           <a href="/cs/QnA">QnA</a>
           <a href="/cs/report">신고하기</a>
           <a href="/cs/notice">공지사항</a>
+           <%if(id != null) {%>
           <a href="/cs/history">나의 문의내역</a>
+          <%} %>
         </div>
       </div>
 	</div>
@@ -26,24 +28,21 @@
 <table width="500" cellpadding="0" cellsapcing="0" border="1">
 		<tr>
 			<td>번호</td>
-			<td>멘토</td>
 			<td>제목</td>
 			<td>내용</td>
-			
 		</tr>
 		<c:forEach items="${list}" var="dto">
 		<tr>
-			<td>${ dto.class_number }</td>
-			<td>${ dto.class_mento }</td>
-			<td><a href="class_content_view?class_number=${ dto.class_number }">${ dto.class_name }</a></td>
-			<td>${ dto.class_date }</td>
-			
+			<td>${ dto.notice_num }</td>
+			<td><a href="class_content_view?class_number=${ dto.notice_num }">${ dto.notice_title }</a></td>
+			<td>${ dto.notice_writer }</td>			
 		</tr>
 		</c:forEach>
+		 <%if(id != null) {%>
 		<tr>
 			<td colspan="5"> <a href="class_write_view">글작성</a> </td>
 		</tr>
-		
+		 <%} %>
 		<tr>
 			<td colspan="5">
 			<!-- 처음 -->
@@ -97,17 +96,8 @@
 			</c:otherwise>
 			</c:choose>
 	</table>
-	
-	totalCount = ${page.totalcount}<br>
-	listCount = ${page.listcount}<br>
-	totalPage = ${page.totalpage}<br>
-	curPage = ${page.curpage}<br>
-	pageCount = ${page.pagecount}<br>
-	startPage = ${page.startpage}<br>
-	endPage = ${page.endpage}<br>
 </div>
 </div>
-notice
 <%@include file ="../footer.jsp" %>
 </body>
 </html>

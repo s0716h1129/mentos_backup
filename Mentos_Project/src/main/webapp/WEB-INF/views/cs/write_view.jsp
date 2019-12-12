@@ -45,20 +45,20 @@
 </head>
 <body>
 
-	<table width="500" cellpadding="0" cellsapcing="0" border="1">
-			<tr>
-				<td> 이름 </td>
-				<td> <input name="class_name" value="${id}"></td>
-			</tr>
-			<tr>
-				<td> 내용 </td>
-				<td><textarea id="summernote" name="QnA_content" placeholder="content"></textarea> 
+	<div width="500" cellpadding="0" cellsapcing="0" border="1">
+			<div>
+				<div> 이름 </div>
+				<div> <input name="class_name" value="${id}"></div>
+			</div>
+			<div>
+				<div> 내용 </div>
+				<div><textarea id="summernote" name="QnA_content" placeholder="content"></textarea> 
 					<script>	
 					$('#summernote').summernote({
 						height: 600,
 						fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
 						fontNamesIgnoreCheck : [ '맑은고딕' ],
-						focus: true,
+						focus: divue,
 						
 						callbacks: {
 							onImageUpload: function(files, editor, welEditable) {
@@ -95,15 +95,8 @@
 					}
 				
 					</script>
-				</td>
-			</tr>
-	<!-- 		<tr>
-				<td colspan="2">
-					<input type="submit" value="입력"> &nbsp;&nbsp;
-					<a href="list">목록보기</a>
-				</td>
-			</tr> -->
-	
-	</table>
+				</div>
+			</div>	
+	</div>
 </body>
 </html>

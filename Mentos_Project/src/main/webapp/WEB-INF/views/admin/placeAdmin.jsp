@@ -61,6 +61,7 @@
     				<input type="text" class="form-control" placeholder="" aria-label="Search" aria-describedby="basic-addon3" id="pId" name="pId"> &nbsp; &nbsp;
     				<button class="btn btn-dark" type="submit"> 검색 <!-- 나중에 돋보기 모양 아이콘 추가하기 --> </button>
     				<input type="hidden" id="type" name="type" value="place">
+    				<input type="hidden" id="menu" name="menu" value="">
     			</div>
     		</form>
     	</div>
@@ -100,6 +101,10 @@
 						</tr>
 					</c:forEach>
             	</table>
+            	
+            	<c:if test="${param.menu eq ''}">
+            		<jsp:include page="placePaging.jsp" flush="false" />
+				</c:if>
             </div>
         </div>
     </div>

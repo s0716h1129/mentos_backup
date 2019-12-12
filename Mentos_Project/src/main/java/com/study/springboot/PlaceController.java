@@ -30,7 +30,7 @@ public class PlaceController {
 		System.out.println("list");
 		//page데이터 
 		int totalCount = bPageInfo.getTotalcount();
-		int listCount = 8;
+		int listCount = 6;
 		int totalPage = bPageInfo.getTotalpage();
 		int curPage = 1;
 		int pageCount = 10;
@@ -192,5 +192,11 @@ public class PlaceController {
 				request.getParameter("place_number")
 				);
 			return "redirect:place_list";
+	}
+	
+	@RequestMapping("/place_reservation")
+	public String place_reservation(HttpServletRequest request, Model model) {
+		
+		return "/place/place_reservation";	
 	}
 }

@@ -19,7 +19,7 @@
 				상세주소 &nbsp;&nbsp; ${dto.place} <br>
 				수용인원 &nbsp;&nbsp; ${dto.place_people_num}명 <br>
 				연락처 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${dto.place_phone} <br><br>
-				<button onclick="location.href='list'">예약문의</button> &nbsp;
+				<button onclick="location.href='place_reservation?place_number=${dto.place_number}'">예약문의</button> &nbsp;
 				<button onclick="location.href='place_modify?place_number=${dto.place_number}'">수정</button> &nbsp;
 				<button onclick="location.href='place_delete?place_number=${dto.place_number}'">삭제</button>
 			</div>

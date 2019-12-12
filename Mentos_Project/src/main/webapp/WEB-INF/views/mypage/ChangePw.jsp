@@ -45,7 +45,7 @@
 	function submit_ajax() {
 		var queryString = $("#my-form").serialize();
 		$.ajax({
-			url: '/modifyAjaxPw',
+			url: './modifyAjaxPw',
 			type: 'POST',
 			data: queryString,
 			dataType: 'text',
@@ -53,7 +53,7 @@
 				var result = JSON.parse(json);
 				if (result.code == "success") {
 					alert(result.desc)
-					window.location.replace("/mypage")
+					window.location.replace("./main")
 				} else {
 					alert(result.desc)
 				}
@@ -73,7 +73,7 @@
 		기존 비밀번호 : <input type="password" name="pw" id="pw"> <br>
 
 		<input type="button" onclick="check()" value="완료"> &nbsp;
-		<button type="button" onclick="location.href='mypage'">취소</button>
+		<a href="#" onClick="history.back()">이전페이지로</a> &nbsp;
 	</form>
 	
 </body>

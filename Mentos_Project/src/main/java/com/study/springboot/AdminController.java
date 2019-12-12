@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,7 +40,7 @@ public class AdminController {
 	
 	// 회원 등급
 	public String grade (String mId) {
-		int score = mDao.InformationDao(mId).getMember_score();
+		int score = mDao.informationDao(mId).getMember_score();
 		String grade = "";
 			
 		if (score >= 0 && score <= 100) {
@@ -84,7 +85,7 @@ public class AdminController {
 			
 		} else {
 			
-			model.addAttribute("serList", mDao.InformationDao(mId));
+			model.addAttribute("serList", mDao.informationDao(mId));
 			model.addAttribute("mId", mId);
 			model.addAttribute("payCount", mDao.PayMemberCountDao(mId));
 			model.addAttribute("grade", grade(mId));
@@ -152,7 +153,7 @@ public class AdminController {
 			model.addAttribute(mDao.MemberMember(mId));
 		}
 			
-		model.addAttribute("serList", mDao.InformationDao(mId));
+		model.addAttribute("serList", mDao.informationDao(mId));
 		model.addAttribute("mId", mId);
 		model.addAttribute("grade", grade(mId));
 			
@@ -173,9 +174,9 @@ public class AdminController {
 		if (checkId == 1) {
 			mDao.ModifyPw(pw, mId);
 			
-			System.out.println(mPw + ", " + mDao.InformationDao(mId).getPassword());
+			System.out.println(mPw + ", " + mDao.informationDao(mId).getPassword());
 			
-			if (passwordEncoder.matches(mPw, mDao.InformationDao(mId).getPassword())) {
+			if (passwordEncoder.matches(mPw, mDao.informationDao(mId).getPassword())) {
 				data = "{\"code\":\"success\",\"desc\":\"비밀번호 수정 성공\"}";
 			} else {
 				
@@ -191,48 +192,106 @@ public class AdminController {
 	
 	// 강좌 검색
 	@RequestMapping("/classSerch")
-	public String classSerch(HttpServletRequest request, Model model) {
+	public String classSerch(HttpServletRequest request, HttpSession session, Model model, @ModelAttribute("bPageInfo") BPageInfo bPageInfo) {
 		String cId = request.getParameter("cId");		
 		String sType = request.getParameter("serType");
 		String menu = request.getParameter("menu");
 		
-		if (sType.equals("s1")) {
-			model.addAttribute("serList", mDao.ClassNumInfo(cId));
-		} else if (sType.equals("s2")) {
-			model.addAttribute("serList", mDao.ClassNameInfo(cId));
-		} else if (sType.equals("s3")) {
-			model.addAttribute("serList", mDao.ClassMentoInfo(cId));
-		}
-			
 		model.addAttribute("cId", cId);
 		
+		//page데이터 
+		int totalCount = bPageInfo.getTotalcount();
+		int listCount = 1;
+		int totalPage = bPageInfo.getTotalpage();
+		int curPage = 1;
+		int pageCount = 10;
+		int startPage = bPageInfo.getStartpage();
+		int endPage = bPageInfo.getEndpage();
+		int nPage = 1;
+				
+		try {
+			String sPage = request.getParameter("page");
+			nPage = Integer.parseInt(sPage);
+		} catch(Exception e) {
+		}
+		if (session.getAttribute("cpage") != null) {
+			curPage = (int)session.getAttribute("cpage");
+		}
+				
+		//총 게시물 수		
+		if (menu.equals("")) {
+			if (sType.equals("s1")) {
+				totalCount = mDao.ClassNumTotalCount(cId);
+			} else if (sType.equals("s2")) {
+				totalCount = mDao.ClassNameTotalCount(cId);
+			} else if (sType.equals("s3")) {
+				totalCount = mDao.ClassMentoTotalCount(cId);
+			}			
+		} else if (menu.equals("pay")) {
+			totalCount = mDao.ClassPayTotalCount(cId);
+		} else if (menu.equals("review")) {
+			totalCount = mDao.ClassReviewTotalCount(cId);
+		}
+				
+		//총 페이지 수 
+		totalPage = totalCount / listCount;
+		if(totalCount % listCount > 0)
+		totalPage++;
+						
+		//현재 페이지
+		int myCurPage = curPage;
+		if (myCurPage > totalPage)
+			myCurPage = totalPage;
+		if (myCurPage < 1)
+			myCurPage = 1;
+						
+		//시작 페이지
+			startPage = ((myCurPage -1) / pageCount) * pageCount + 1;
+						
+		//끝 페이지
+		endPage = startPage + pageCount -1;
+		if(endPage > totalPage)
+			endPage = totalPage;
+				
+		System.out.println("nPage는" + nPage);
+				
+		//curPage 갱신
+		curPage = nPage;
+		session.setAttribute("cpage", curPage);
+				
+		//listDao에 필요한 Start End 값
+		int nStart = (curPage - 1) * listCount + 1;
+		int nEnd = (curPage - 1) * listCount + listCount;
+				
+		BPageInfo pinfo = new BPageInfo();
+		pinfo.setTotalcount(totalCount);
+		pinfo.setListcount(listCount);
+		pinfo.setTotalpage(totalPage);
+		pinfo.setCurpage(curPage);
+		pinfo.setPagecount(pageCount);
+		pinfo.setStartpage(startPage);
+		pinfo.setEndpage(endPage);
 		
-		if (menu.equals("pay")) {
-			model.addAttribute("cPay", mDao.CPayInfoClassDao(cId));
+		model.addAttribute("page", pinfo);
+		
+		if (menu.equals("")) {
+			if (sType.equals("s1")) {
+				model.addAttribute("serList", mDao.ClassNumList(cId, nStart, nEnd));
+			} else if (sType.equals("s2")) {
+				model.addAttribute("serList", mDao.ClassNameList(cId, nStart, nEnd));			
+			} else if (sType.equals("s3")) {
+				model.addAttribute("serList", mDao.ClassMentoList(cId, nStart, nEnd));
+			}
+			
+		} else if (menu.equals("pay")) {
+			model.addAttribute("serList", mDao.ClassInfo(cId));
+			model.addAttribute("cPay", mDao.ClassPayList(cId,  nStart, nEnd));
+			
+		} else if (menu.equals("review")) {
+			model.addAttribute("serList", mDao.ClassInfo(cId));
+			model.addAttribute("cReview", mDao.ClassReviewList(cId, nStart, nEnd));
 		}
 
-		return "/admin/AdminPage";
-	}
-	
-	// 강좌 결제 내역
-	@RequestMapping("/classPay")
-	public String classPay(HttpServletRequest request, Model model) {
-		String cId = request.getParameter("cId");		
-			
-		model.addAttribute("serList", mDao.ClassNumInfo(cId));
-		model.addAttribute("cPay", mDao.CPayInfoClassDao(cId));
-			
-		return "/admin/AdminPage";
-	}
-	
-	// 강좌 리뷰 내역
-	@RequestMapping("/classReview")
-	public String classReview(HttpServletRequest request, Model model) {
-		String cId = request.getParameter("cId");
-			
-		model.addAttribute("serList", mDao.ClassNumInfo(cId));
-		model.addAttribute("cReview", mDao.ClassReviewDao(cId));
-			
 		return "/admin/AdminPage";
 	}
 	
@@ -248,14 +307,77 @@ public class AdminController {
 	
 	// 장소 검색
 	@RequestMapping("/placeSerch")
-	public String PlaceSerch(HttpServletRequest request, Model model) {
+	public String PlaceSerch(HttpServletRequest request, HttpSession session, Model model, @ModelAttribute("bPageInfo") BPageInfo bPageInfo) {
 		String pId = request.getParameter("pId");
 		String sType = request.getParameter("serType");
+		String menu = request.getParameter("menu");
 		
-		if (sType.equals("s1")) {
-			model.addAttribute("serList", mDao.PlaceNumInfo(pId));
-		} else if (sType.equals("s2")) {
-			model.addAttribute("serList", mDao.PlaceNameInfo(pId));
+		//page데이터 
+		int totalCount = bPageInfo.getTotalcount();
+		int listCount = 1;
+		int totalPage = bPageInfo.getTotalpage();
+		int curPage = 1;
+		int pageCount = 10;
+		int startPage = bPageInfo.getStartpage();
+		int endPage = bPageInfo.getEndpage();
+		int nPage = 1;
+								
+		try {
+			String sPage = request.getParameter("page");
+			nPage = Integer.parseInt(sPage);
+		} catch(Exception e) {
+		}
+		if (session.getAttribute("cpage") != null) {
+			curPage = (int)session.getAttribute("cpage");
+		}
+								
+		//총 게시물 수		
+		if (menu.equals("")) {
+			totalCount = mDao.placeNumTotalCount(pId);
+		}
+		//총 페이지 수 
+		totalPage = totalCount / listCount;
+		if(totalCount % listCount > 0)
+		totalPage++;
+										
+		//현재 페이지
+		int myCurPage = curPage;
+		if (myCurPage > totalPage)
+			myCurPage = totalPage;
+		if (myCurPage < 1)
+			myCurPage = 1;
+										
+		//시작 페이지
+			startPage = ((myCurPage -1) / pageCount) * pageCount + 1;
+										
+		//끝 페이지
+		endPage = startPage + pageCount -1;
+		if(endPage > totalPage)
+			endPage = totalPage;
+								
+		System.out.println("nPage는" + nPage);
+								
+		//curPage 갱신
+		curPage = nPage;
+		session.setAttribute("cpage", curPage);
+								
+		//listDao에 필요한 Start End 값
+		int nStart = (curPage - 1) * listCount + 1;
+		int nEnd = (curPage - 1) * listCount + listCount;
+								
+		BPageInfo pinfo = new BPageInfo();
+		pinfo.setTotalcount(totalCount);
+		pinfo.setListcount(listCount);
+		pinfo.setTotalpage(totalPage);
+		pinfo.setCurpage(curPage);
+		pinfo.setPagecount(pageCount);
+		pinfo.setStartpage(startPage);
+		pinfo.setEndpage(endPage);
+						
+		model.addAttribute("page", pinfo);
+		
+		if (menu.equals("")) {
+			model.addAttribute("serList", mDao.PlaceNumList(pId, nStart, nEnd));
 		}
 		
 		model.addAttribute("pId", pId);

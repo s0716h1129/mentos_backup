@@ -1,8 +1,10 @@
 package com.study.springboot;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +23,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.study.springboot.dao.IMemberDao;
 import com.study.springboot.dto.MemberDto;
 import com.study.springboot.kakaoAPI.KakaoAPI;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping(value= {"/main", ""})
 public class MyController {
 	
 	@Autowired IMemberDao dao;
@@ -52,17 +55,17 @@ public class MyController {
 			@ModelAttribute("dto")@Valid MemberDto memberDto, BindingResult result1) {
 		String page = "redirect:main";
 		HttpSession session = request.getSession();
-		String snsId = (String) session.getAttribute("id");
+		String snsId = (String) session.getAttribute("snscheck");
 		String profile_image = (String) session.getAttribute("profile_image");
 		int checkid = 0; 
 		
 		if(snsId == null) {
-			checkid = dao.check_id(request.getParameter("email"));
 			
 			if(checkid == 1) { System.out.println("이미 있는 아이디 입니다."); return "redirect:main"; }
 			memberDto.setEmail(request.getParameter("email"));
 			memberDto.setPassword(request.getParameter("pw"));
-			memberDto.setMember_image(request.getParameter("image"));
+			memberDto.setMember_image("");
+			memberDto.setSns_check("");
 		} else {
 			checkid = dao.check_id(snsId);
 			if(checkid == 1) { System.out.println("이미 있는 아이디 입니다."); return "redirect:main"; }
@@ -91,8 +94,9 @@ public class MyController {
 					passwordEncoder1().encode(memberDto.getPassword()),
 					memberDto.getNickname(),
 					memberDto.getPhonenumber(),
-					memberDto.getMember_image());
-			return "";
+					memberDto.getMember_image(),
+					memberDto.getSns_check());
+			return "/main";
 		}
 	}
 	
@@ -111,7 +115,7 @@ public class MyController {
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request, Model model) {
 		request.getSession().removeAttribute("id");
-		return "";
+		return "/main";
 	}	
 	
 	@RequestMapping("/login")
@@ -123,17 +127,16 @@ public class MyController {
         System.out.println("login Controller : " + userInfo);
         HttpSession session = request.getSession();
         //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
-        if (userInfo.get("id") != null) {
-        	String snsEmail = dao.snsCheck(userInfo.get("id").toString()); 
-        	MemberDto dto = dao.InformationDao(snsEmail);
-        	if(dto == null) {
-        		session.setAttribute("id", userInfo.get("id"));
+        if (userInfo.get("snscheck") != null) {
+        	String snsEmail = dao.snsCheck(userInfo.get("snscheck").toString()); 
+        	if(snsEmail == null) {
+        		session.setAttribute("snscheck", userInfo.get("snscheck"));
        		 	session.setAttribute("profile_image", userInfo.get("profile_image"));
        		 	return "/joinForm";
         	} else {
-        		session.setAttribute("id", dto.getEmail());
+        		session.setAttribute("id", dao.informationDao(snsEmail).getEmail());
 	            session.setAttribute("access_Token", access_Token);
-	            return "";
+	            return "/main";
         	}
         }else if(code == null) {
 			String sId = request.getParameter("MemberId");
@@ -144,7 +147,7 @@ public class MyController {
 			dto = dao.userCheck(sId, sPw);
 			if(dto.equals(sPw)) {
 				session.setAttribute("id", sId);
-				return "";
+				return "/main";
 			} else {
 				return "/loginForm";
 			}		
@@ -208,7 +211,7 @@ public class MyController {
 			HttpServletResponse response, MemberDto member) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		MemberDto dto = dao.InformationDao(email);
+		MemberDto dto = dao.informationDao(email);
 		// 아이디가 없으면
 		if(dao.check_id(email) == 0) {
 			out.print("아이디가 없습니다.");
@@ -290,4 +293,48 @@ public class MyController {
 		  resultCode = "F-1";
 		}
 	}
+	
+	// alram
+	@RequestMapping(value = "/check_alram")
+	public void check_alram(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException{		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		System.out.println("check_alram");
+		HttpSession session = request.getSession();
+		String userID = (String) session.getAttribute("id");
+		if(userID == null || userID.equals("") )
+		{
+			System.out.println("no ID");
+			response.getWriter().write("0");
+		}else {
+			System.out.println("alram");
+			response.getWriter().write(getAlram(userID) + "");
+		}
+		model.addAttribute("alram", getAlram(userID));
+	}
+	
+	public int getAlram(String userID) {
+		int count = 0;
+		
+		count = dao.check_alram(userID);
+		
+		return count;
+		
+	}
+	
+	// 안드로이드 회원가입
+			@RequestMapping("/Andjoin")
+			public void join(HttpServletRequest request, @RequestParam("email") String email, @RequestParam("password") String pw,
+					@RequestParam("nickname") String nickname, @RequestParam("phonenumber") String phoneNumber
+					,@RequestParam("MEMBER_IMAGE") String image) {
+				
+				System.out.println(email);
+				System.out.println(pw);
+				System.out.println(nickname);
+				System.out.println(phoneNumber);
+				System.out.println(image);
+
+				dao.AndinsertMember(email, pw, nickname, phoneNumber,image);
+			}
+			
 }

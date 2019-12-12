@@ -16,7 +16,9 @@
           <a href="/cs/QnA">QnA</a>
           <a href="/cs/report">신고하기</a>
           <a href="/cs/notice">공지사항</a>
+           <%if(id != null) {%>
           <a href="/cs/history">나의 문의내역</a>
+          <%} %>
         </div>
       </div>
 	</div>

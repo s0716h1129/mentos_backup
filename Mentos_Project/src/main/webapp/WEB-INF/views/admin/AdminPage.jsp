@@ -17,10 +17,12 @@
 
 <!-- Custom styles for this template -->
 <link href="../resources/css/sb-admin.css" rel="stylesheet">
+<link href="../resources/css/scrolling-nav.css" rel="stylesheet">
+
 </head>
 <body id="page-top">
-  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-    <a class="navbar-brand mr-1" href="./main?type="> Mento's 관리자 페이지 </a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+   	<h3 class='text-white'> Mentos AdminPage </h3>
   </nav>
   
   <div id="wrapper">
@@ -29,7 +31,7 @@
   	  	<c:when test="${param.type eq 'member'}">
   	  		<li class="nav-item dropdown">
         		<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-          			<span> 회원 관리 </span>
+          			<span> <br><br> 회원 관리 </span>
         		</a>
        			<div class="dropdown-menu show" aria-labelledby="pagesDropdown">
           			<a class="dropdown-item" href="./main?type=member"> 회원 검색 </a>
@@ -42,7 +44,7 @@
   	  <c:otherwise>
   	  	  <li class="nav-item">
   	  	  	<a class="nav-link" href="./main?type=member">
-          		<span> 회원 관리 </span>
+          		<span> <br><br> 회원 관리 </span>
         	</a>
           </li>
   	  </c:otherwise>
@@ -84,7 +86,7 @@
   	  </c:choose>
     </ul>
     
-    <div id="content-wrapper">
+    <div id="content-wrapper" style="padding: 100px 00px 100px 00px">
       <div class="container-fluid">
 	    <c:if test="${param.type eq 'member'}">
 	    	<jsp:include page="memberAdmin.jsp" flush="false" />
@@ -100,19 +102,7 @@
   </div>
  
 	
-<!-- Bootstrap core JavaScript -->
-<script src="../resources/vendor/jquery/jquery.min.js"></script>
-<script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Plugin JavaScript -->
-<script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Bootstrap core JavaScript -->
-<script src="../resources/vendor/jquery/jquery.min.js"></script>
-<script src="../resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Plugin JavaScript -->
-<script src="../resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <%@include file ="../footer.jsp" %>
 
 
 </body>
